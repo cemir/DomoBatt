@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant:stable
+    volumes:
+      - /home/cem/home-assistant/config:/config
+    environment:
+      - TZ=Europe/Brussels
+    restart: always
+    network_mode: host
+
+  esphome:
+    image: esphome/esphome
+    ports:
+      - 6052:6052
+      - 6123:6123
+    volumes:
+      - ./esphome/config:/config:rw
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    #network_mode: host
+    command: config/ dashboard
