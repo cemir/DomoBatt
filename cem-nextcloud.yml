@@ -1,0 +1,41 @@
+version: '2'
+
+networks:
+  newt-int:
+  web:
+    external: true
+    
+volumes:
+  nextcloud:
+  db:
+
+services:
+  db:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    # volumes:
+    #  - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=toto
+      - MYSQL_PASSWORD=nexttoto
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    networks:
+      - next-int
+
+  app:
+    image: nextcloud
+    #ports:
+    #  - 8080:80
+    links:
+      - db
+    # volumes:
+    #  - nextcloud:/var/www/html
+    restart: always
+    networks:
+      - web
+      - next-int
+    labels:
+      - traefik.frontend.rule=Host:next.cemtech.eu
+      - traefik.port=80
