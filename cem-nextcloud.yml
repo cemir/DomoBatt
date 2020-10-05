@@ -23,4 +23,4 @@ services:
       - web
     labels:
       - traefik.frontend.rule=Host:next.cemtech.eu
-      - traefik.port=443
+      - traefik.port=80
